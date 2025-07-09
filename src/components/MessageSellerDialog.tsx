@@ -15,13 +15,17 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Textarea } from "@/components/ui/textarea"
 import { toast } from "sonner"
+import { Database } from "@/lib/database.types";
+
+
+type Listing = Database['public']['Tables']['listings']['Row'];
 
 function SubmitButton() {
   const { pending } = useFormStatus();
   return <Button type="submit" disabled={pending}>{pending ? "Sending..." : "Send Message"}</Button>;
 }
 
-export function MessageSellerDialog({ listing }: { listing: any }) {
+export function MessageSellerDialog({ listing }: { listing: Listing }) {
 
   const initialState: MessageState = { message: null, success: false, errors: {} };
   const [state, dispatch] = useActionState(sendMessage, initialState);
@@ -43,7 +47,7 @@ export function MessageSellerDialog({ listing }: { listing: any }) {
       </DialogTrigger>
       <DialogContent>
         <DialogHeader>
-          <DialogTitle>Send a message about "{listing.title}"</DialogTitle>
+          <DialogTitle>Send a message about &quot;{listing.title}&quot;</DialogTitle>
         </DialogHeader>
         <form action={dispatch} className="space-y-4">
             <input type="hidden" name="listing_id" value={listing.id} />

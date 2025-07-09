@@ -40,7 +40,7 @@ export default async function HomePage({
       </div>
 
       <div className="md:col-span-3 lg:col-span-4">
-        <h1 className="text-3xl font-bold mb-4">Today's Picks</h1>
+        <h1 className="text-3xl font-bold mb-4">Today&apos;s Picks</h1>
         <Search />
 
         {listings.length === 0 ? (

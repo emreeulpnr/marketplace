@@ -97,6 +97,7 @@ export function CreateListingForm() {
             <Select
               name="category"
               onValueChange={setCategory}
+              value={category}
               required
             >
               <SelectTrigger>
