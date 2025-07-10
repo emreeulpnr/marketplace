@@ -7,15 +7,12 @@ import { Button } from '@/components/ui/button'
 import Image from 'next/image'
 import { Database } from '@/lib/database.types'
 
-// ✅ DÜZELTME 1: Sayfanın alacağı proplar için net bir tip tanımı yapıyoruz.
-interface Props {
-  params: { id: string };
-}
+// ✅ DÜZELTME: `Props` arayüzü kaldırıldı.
 
 type Listing = Database['public']['Tables']['listings']['Row'];
 
-// ✅ DÜZELTME 2: Bileşenin bu Props tipini kullanmasını sağlıyoruz.
-export default async function ListingDetailPage({ params }: Props) {
+// ✅ DÜZELTME: Fonksiyon tanımı en temel ve standart Next.js yapısına geri döndürüldü.
+export default async function ListingDetailPage({ params }: { params: { id: string } }) {
   const supabase = await createClient()
   const { data: listing } = await supabase
     .from('listings')
@@ -23,6 +20,7 @@ export default async function ListingDetailPage({ params }: Props) {
     .eq('id', params.id)
     .single()
 
+  // Bu kontrol sayesinde, bu satırdan sonra `listing`'in null olmadığı bilinir.
   if (!listing) {
     notFound();
   }
@@ -69,8 +67,8 @@ export default async function ListingDetailPage({ params }: Props) {
                     <h2 className="text-xl font-semibold mb-2">Seller Information</h2>
                     <p className="text-gray-700">{listing.seller_email}</p>
                 </div>
-                {/* MessageSellerDialog'a listing'in tipini belirtmek için Listing tipini kullandık */}
-                <MessageSellerDialog listing={listing as Listing} />
+                {/* ✅ DÜZELTME: `as Listing` ifadesi gereksiz olduğu için kaldırıldı. */}
+                <MessageSellerDialog listing={listing} />
             </div>
         </div>
     </div>
