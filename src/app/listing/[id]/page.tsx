@@ -7,9 +7,7 @@ import { Button } from '@/components/ui/button'
 import Image from 'next/image'
 import { Database } from '@/lib/database.types'
 
-// ✅ DÜZELTME: `Props` arayüzü kaldırıldı.
 
-type Listing = Database['public']['Tables']['listings']['Row'];
 
 // ✅ DÜZELTME: Fonksiyon tanımı en temel ve standart Next.js yapısına geri döndürüldü.
 export default async function ListingDetailPage({ params }: { params: { id: string } }) {
