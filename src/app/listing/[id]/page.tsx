@@ -1,9 +1,14 @@
 import { createClient } from '@/lib/supabase/server'
 import { notFound } from 'next/navigation'
-import { ListingDetail } from '@/components/ListingDetail' // ✅ Yeni UI bileşenini import ediyoruz
+import { ListingDetail } from '@/components/ListingDetail'
 
-// Bu sayfa artık sadece veri çekmekle sorumlu.
-export default async function ListingDetailPage({ params }: { params: { id: string } }) {
+interface PageProps {
+  params: {
+    id: string
+  }
+}
+
+export default async function ListingDetailPage({ params }: PageProps) {
   const supabase = await createClient()
   const { data: listing } = await supabase
     .from('listings')
@@ -15,6 +20,5 @@ export default async function ListingDetailPage({ params }: { params: { id: stri
     notFound();
   }
 
-  // Veriyi çektikten sonra, bu veriyi arayüz bileşenine prop olarak gönderiyoruz.
   return <ListingDetail listing={listing} />
 }
