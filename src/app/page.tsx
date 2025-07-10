@@ -8,35 +8,40 @@ export const dynamic = 'force-dynamic'
 
 type Listing = Database['public']['Tables']['listings']['Row']
 
-export default async function HomePage({
-  searchParams
-}: {
-  searchParams: { q?: string; category?: string }
-}) {
+type HomePageProps = {
+  searchParams: {
+    q?: string
+    category?: string
+  }
+}
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export default async function HomePage(props: any) {
+  const { searchParams } = props
   const supabase = await createClient()
 
   let query = supabase.from('listings').select('*')
 
-  if (searchParams.q) {
-    const searchTerm = searchParams.q.toLowerCase();
+  if (searchParams?.q) {
+    const searchTerm = searchParams.q.toLowerCase()
     query = query.or(`title.ilike.%${searchTerm}%,description.ilike.%${searchTerm}%`)
   }
 
-  if (searchParams.category && searchParams.category !== 'all') {
+  if (searchParams?.category && searchParams.category !== 'all') {
     query = query.eq('category', searchParams.category)
   }
 
-  const { data: listings, error } = await query.order('created_at', { ascending: false });
+  const { data: listings, error } = await query.order('created_at', { ascending: false })
 
-  if(error) {
-    console.error("Error fetching listings:", error);
+  if (error) {
+    console.error('Error fetching listings:', error)
     return <p>An error occurred while loading listings.</p>
   }
 
   return (
     <div className="grid grid-cols-1 md:grid-cols-4 lg:grid-cols-5 gap-8">
       <div className="md:col-span-1 lg:col-span-1">
-        <Sidebar currentCategory={searchParams.category} />
+        <Sidebar currentCategory={searchParams?.category} />
       </div>
 
       <div className="md:col-span-3 lg:col-span-4">
