@@ -8,14 +8,6 @@ export const dynamic = 'force-dynamic'
 
 type Listing = Database['public']['Tables']['listings']['Row']
 
-type HomePageProps = {
-  searchParams: {
-    q?: string
-    category?: string
-  }
-}
-
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export default async function HomePage(props: any) {
   const { searchParams } = props
   const supabase = await createClient()
