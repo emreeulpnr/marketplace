@@ -2,22 +2,18 @@ import { createClient } from '@/lib/supabase/server'
 import { notFound } from 'next/navigation'
 import { ListingDetail } from '@/components/ListingDetail'
 
-interface PageProps {
-  params: {
-    id: string
-  }
-}
+export default async function ListingDetailPage(props: { params: { id: string } }) {
+  const { id } = props.params
 
-export default async function ListingDetailPage({ params }: PageProps) {
   const supabase = await createClient()
   const { data: listing } = await supabase
     .from('listings')
     .select('*')
-    .eq('id', params.id)
+    .eq('id', id)
     .single()
 
   if (!listing) {
-    notFound();
+    notFound()
   }
 
   return <ListingDetail listing={listing} />
