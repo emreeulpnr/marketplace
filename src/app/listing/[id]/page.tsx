@@ -5,8 +5,17 @@ import Link from 'next/link'
 import { ArrowLeft } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import Image from 'next/image'
+import { Database } from '@/lib/database.types'
 
-export default async function ListingDetailPage({ params }: { params: { id: string } }) {
+// ✅ DÜZELTME 1: Sayfanın alacağı proplar için net bir tip tanımı yapıyoruz.
+interface Props {
+  params: { id: string };
+}
+
+type Listing = Database['public']['Tables']['listings']['Row'];
+
+// ✅ DÜZELTME 2: Bileşenin bu Props tipini kullanmasını sağlıyoruz.
+export default async function ListingDetailPage({ params }: Props) {
   const supabase = await createClient()
   const { data: listing } = await supabase
     .from('listings')
@@ -30,21 +39,16 @@ export default async function ListingDetailPage({ params }: { params: { id: stri
         </div>
 
         <div className="grid md:grid-cols-2 gap-8 max-w-5xl mx-auto">
-            {/* DÜZELTME BAŞLANGICI */}
             <div>
-              {/* 1. Parent div'e `relative` ve bir en-boy oranı (`aspect-square`) veriyoruz.
-                Bu, resmin dolduracağı alanı tanımlar.
-              */}
               <div className="relative aspect-square w-full overflow-hidden rounded-lg shadow-lg">
                 <Image
                   src={listing.image_url || 'https://via.placeholder.com/600'}
                   alt={listing.title}
-                  fill // ✅ `fill` prop'u, resmin parent'ını doldurmasını sağlar.
-                  className="object-cover" // ✅ Resmin oranını bozmadan alanı kaplamasını sağlar.
+                  fill
+                  className="object-cover"
                 />
               </div>
             </div>
-            {/* DÜZELTME SONU */}
 
             <div className="space-y-4">
                 <h1 className="text-4xl font-bold">{listing.title}</h1>
@@ -65,7 +69,8 @@ export default async function ListingDetailPage({ params }: { params: { id: stri
                     <h2 className="text-xl font-semibold mb-2">Seller Information</h2>
                     <p className="text-gray-700">{listing.seller_email}</p>
                 </div>
-                <MessageSellerDialog listing={listing} />
+                {/* MessageSellerDialog'a listing'in tipini belirtmek için Listing tipini kullandık */}
+                <MessageSellerDialog listing={listing as Listing} />
             </div>
         </div>
     </div>
